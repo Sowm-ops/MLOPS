@@ -27,6 +27,13 @@ jobs:
           pip install -r requirements.txt
           pip install dvc[s3]
 
+      - name: Configure DVC remote (S3)
+        run: |
+          dvc remote add -d myremote s3://sowmya-dvc-store/dvcstore --force
+          dvc remote modify myremote region $AWS_REGION --local
+          dvc remote modify myremote access_key_id $AWS_ACCESS_KEY_ID --local
+          dvc remote modify myremote secret_access_key $AWS_SECRET_ACCESS_KEY --local
+
       - name: Pull data with DVC
         run: dvc pull -v
 
