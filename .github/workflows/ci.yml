@@ -1,0 +1,40 @@
+name: CI MLOps Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.10
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install dvc[s3]
+
+    - name: Configure DVC S3 Remote
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        dvc remote add -d myremote s3://sowmya-dvc-store/dvcstore
+        dvc remote modify myremote access_key_id $AWS_ACCESS_KEY_ID
+        dvc remote modify myremote secret_access_key $AWS_SECRET_ACCESS_KEY
+        dvc remote modify myremote region ap-south-1
+
+    - name: Pull DVC Data
+      run: dvc pull -v
+
+    - name: Run pipeline
+      run: dvc repro

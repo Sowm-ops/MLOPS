@@ -1,0 +1,5 @@
+/tmp
+/cache
+/model.pkl
+/metrics.json
+.dvc/config.local
