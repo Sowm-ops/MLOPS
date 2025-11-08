@@ -1,19 +1,22 @@
 stages:
   prepare_data:
-    cmd: python src/data_prep.py
+    cmd: python src\data_prep.py
     deps:
       - dataset.csv  # Original data
     outs:
-      - data/train.csv
-      - data/test.csv
+      - data\train.csv
+      - data\test.csv
   train_model:
-    cmd: python src/train.py  # We'll create this next
+    cmd: python src\train.py  # We'll create this next
     deps:
-      - data/train.csv
-      - data/test.csv
+      - data\train.csv
+      - data\test.csv
       - params.yaml
     params:
-      - train.test_size
-      - models.logistic.C  # Etc., for tuning
+      - train.test_size  # For split (used in prep, referenced here for pipeline)
+      - train.cv_folds
+      - models.svm.C  # SVM tuning params
+      - models.svm.kernel
+      - models.logistic.C  # If switching models
     outs:
-      - models/best_model.pkl  # MLflow will log this too
+      - models\best_model.pkl  # MLflow will log this too

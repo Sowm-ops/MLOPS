@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/143345464367931104/f8aa596bfb314797b93b496ffe92cd0f/artifacts
+end_time: 1762607967159
+entry_point_name: ''
+experiment_id: '143345464367931104'
+lifecycle_stage: active
+run_id: f8aa596bfb314797b93b496ffe92cd0f
+run_name: local_svm_tuning
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762607955495
+status: 3
+tags: []
+user_id: KALYAN

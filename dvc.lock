@@ -40,3 +40,57 @@ stages:
       hash: md5
       md5: 66fbc42250f2fc2fe3c1e9ec69b70833
       size: 17
+  prepare_data:
+    cmd: python src\data_prep.py
+    deps:
+    - path: dataset.csv
+      hash: md5
+      md5: 3aa3a154e463d71d869ee28a1aa0881e
+      size: 44
+    outs:
+    - path: data\test.csv
+      hash: md5
+      md5: da2f2b707219cec139dbaa19425ea6d5
+      size: 7968
+    - path: data\train.csv
+      hash: md5
+      md5: 606c51d44d520377e5c4e4a1190c9d91
+      size: 31857
+  train_model:
+    cmd: python src\train.py
+    deps:
+    - path: data\test.csv
+      hash: md5
+      md5: da2f2b707219cec139dbaa19425ea6d5
+      size: 7968
+    - path: data\train.csv
+      hash: md5
+      md5: 606c51d44d520377e5c4e4a1190c9d91
+      size: 31857
+    - path: params.yaml
+      hash: md5
+      md5: cf4ad82b592266f4bdaecf1098e137e8
+      size: 273
+    params:
+      params.yaml:
+        models.logistic.C:
+        - 0.01
+        - 0.1
+        - 1
+        - 10
+        - 100
+        models.svm.C:
+        - 0.1
+        - 1
+        - 10
+        models.svm.kernel:
+        - linear
+        - rbf
+        - poly
+        train.cv_folds: 5
+        train.test_size: 0.2
+    outs:
+    - path: models\best_model.pkl
+      hash: md5
+      md5: c66338c01af98c7a0402601c930c24dd
+      size: 2539
