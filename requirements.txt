@@ -3,3 +3,9 @@ pandas
 numpy
 dvc[gdrive]
 joblib
+streamlit
+mlflow
+scikit-learn
+plotly
+seaborn
+matplotlib

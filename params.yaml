@@ -1,2 +1,13 @@
 train:
-  split: 0.8
+  test_size: 0.2
+  cv_folds: 5
+models:
+  logistic:
+    C: [0.01, 0.1, 1, 10, 100]
+    penalty: ['l1', 'l2']
+  random_forest:
+    n_estimators: [50, 100, 200]
+    max_depth: [3, 5, 10, null]
+  svm:
+    C: [0.1, 1, 10]
+    kernel: ['linear', 'rbf', 'poly']

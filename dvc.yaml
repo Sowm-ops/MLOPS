@@ -1,17 +1,19 @@
 stages:
-  train:
-    cmd: python src/train.py
+  prepare_data:
+    cmd: python src/data_prep.py
     deps:
-      - data/dataset.csv
+      - dataset.csv  # Original data
+    outs:
+      - data/train.csv
+      - data/test.csv
+  train_model:
+    cmd: python src/train.py  # We'll create this next
+    deps:
+      - data/train.csv
+      - data/test.csv
       - params.yaml
-      - src/train.py
+    params:
+      - train.test_size
+      - models.logistic.C  # Etc., for tuning
     outs:
-      - data/model.pkl
-  evaluate:
-    cmd: python src/evaluate.py
-    deps:
-      - data/dataset.csv
-      - data/model.pkl
-      - src/evaluate.py
-    outs:
-      - data/metrics.json
+      - models/best_model.pkl  # MLflow will log this too
