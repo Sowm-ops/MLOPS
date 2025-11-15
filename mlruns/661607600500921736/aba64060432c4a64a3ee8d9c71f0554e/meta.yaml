@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/661607600500921736/aba64060432c4a64a3ee8d9c71f0554e/artifacts
+end_time: 1763202434826
+entry_point_name: ''
+experiment_id: '661607600500921736'
+lifecycle_stage: active
+run_id: aba64060432c4a64a3ee8d9c71f0554e
+run_name: multi_model_tuning
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763202423882
+status: 3
+tags: []
+user_id: KALYAN

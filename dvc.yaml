@@ -1,22 +1,32 @@
+# dvc.yaml
 stages:
   prepare_data:
-    cmd: python src\data_prep.py
+    cmd: python src/data_prep.py
     deps:
-      - dataset.csv  # Original data
+      - src/data_prep.py
+      - IMDB Dataset.csv
+      - params.yaml
     outs:
-      - data\train.csv
-      - data\test.csv
+      - data/train.csv
+      - data/test.csv
+
   train_model:
-    cmd: python src\train.py  # We'll create this next
+    cmd: python src/train.py
     deps:
-      - data\train.csv
-      - data\test.csv
+      - src/train.py
+      - data/train.csv
+      - data/test.csv
       - params.yaml
     params:
-      - train.test_size  # For split (used in prep, referenced here for pipeline)
-      - train.cv_folds
-      - models.svm.C  # SVM tuning params
+      - models.svm.C
       - models.svm.kernel
-      - models.logistic.C  # If switching models
+      - models.rf.n_estimators
+      - models.rf.max_depth
+      - models.lr.C
+      - models.lr.solver
+      - train.cv_folds
+      - train.test_size
     outs:
-      - models\best_model.pkl  # MLflow will log this too
+      - models/best_model.pkl
+    metrics:
+      - mlruns/

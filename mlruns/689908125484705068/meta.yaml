@@ -1,0 +1,6 @@
+artifact_location: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/689908125484705068
+creation_time: 1763213670228
+experiment_id: '689908125484705068'
+last_update_time: 1763213670228
+lifecycle_stage: active
+name: mlops_imdb_boosted

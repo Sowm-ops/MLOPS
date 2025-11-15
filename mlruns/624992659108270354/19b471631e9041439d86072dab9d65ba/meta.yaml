@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/624992659108270354/19b471631e9041439d86072dab9d65ba/artifacts
+end_time: 1763217929849
+entry_point_name: ''
+experiment_id: '624992659108270354'
+lifecycle_stage: active
+run_id: 19b471631e9041439d86072dab9d65ba
+run_name: painted-smelt-607
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763217900864
+status: 3
+tags: []
+user_id: KALYAN

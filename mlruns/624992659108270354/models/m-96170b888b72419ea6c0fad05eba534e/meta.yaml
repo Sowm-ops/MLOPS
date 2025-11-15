@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/624992659108270354/models/m-96170b888b72419ea6c0fad05eba534e/artifacts
+creation_timestamp: 1763217923026
+experiment_id: '624992659108270354'
+last_updated_timestamp: 1763217929817
+model_id: m-96170b888b72419ea6c0fad05eba534e
+model_type: null
+name: best_model
+source_run_id: 19b471631e9041439d86072dab9d65ba
+status: 2
+status_message: null

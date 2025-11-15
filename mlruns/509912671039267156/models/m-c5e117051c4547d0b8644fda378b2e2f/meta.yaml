@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/509912671039267156/models/m-c5e117051c4547d0b8644fda378b2e2f/artifacts
+creation_timestamp: 1763223116909
+experiment_id: '509912671039267156'
+last_updated_timestamp: 1763223121837
+model_id: m-c5e117051c4547d0b8644fda378b2e2f
+model_type: null
+name: heart_model
+source_run_id: 1c2e7270a04347adb4f7fd58f3d6695b
+status: 2
+status_message: null

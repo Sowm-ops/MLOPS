@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/624992659108270354/a4a38a815eca4aceaa1b839db02271d7/artifacts
+end_time: 1763217076748
+entry_point_name: ''
+experiment_id: '624992659108270354'
+lifecycle_stage: active
+run_id: a4a38a815eca4aceaa1b839db02271d7
+run_name: gifted-mouse-363
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763217056699
+status: 3
+tags: []
+user_id: KALYAN
