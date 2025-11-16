@@ -1,8 +1,8 @@
 [core]
     remote = myremote
-['remote "myremote"']
-    url = s3://sowmya-dvc-store/dvcstore
-    endpointurl = https://sowmya-dvc-store.s3.ap-south-1.amazonaws.com
 ['remote "s3remote"']
     url = s3://sowmya-dvc-store/dvcstore/
     endpointurl = https://s3.ap-south-1.amazonaws.com
+['remote "myremote"']
+    url = s3://sowmya-dvc-store/dvcstore
+    region = ap-south-1
