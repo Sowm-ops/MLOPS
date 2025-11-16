@@ -1,96 +1,120 @@
 schema: '2.0'
 stages:
-  train:
+  prepare_data:
+    cmd: python src/data_prep.py
+    deps:
+    - path: IMDB Dataset.csv
+      hash: md5
+      md5: 308443a50e5c993e7b8a1cdb95750026
+      size: 66212309
+    - path: heart.csv
+      hash: md5
+      md5: f1800e98a8507551de5873226be1682b
+      size: 11325
+    - path: params.yaml
+      hash: md5
+      md5: 0015d878e0088089962e75148dca7617
+      size: 833
+    - path: src/data_prep.py
+      hash: md5
+      md5: 065fca170c7407147483bcab4bfce45b
+      size: 5278
+    outs:
+    - path: data/heart_test.csv
+      hash: md5
+      md5: b0ad34418e7fbaa526474836c5cfac35
+      size: 15861
+    - path: data/heart_train.csv
+      hash: md5
+      md5: 7415a3638c7b25f9a9fba5fd60cccbaf
+      size: 62637
+    - path: data/imdb_test.csv
+      hash: md5
+      md5: c19b359013154bf250c23d306170498f
+      size: 77875998
+    - path: data/imdb_train.csv
+      hash: md5
+      md5: ddb62a1a41522965bb06a96ef3a7f285
+      size: 311815290
+  train_model:
     cmd: python src/train.py
     deps:
-    - path: data/dataset.csv
+    - path: data/heart_test.csv
       hash: md5
-      md5: 08282760c70eaeee1114e7c7644970fb
-      size: 42
+      md5: b0ad34418e7fbaa526474836c5cfac35
+      size: 15861
+    - path: data/heart_train.csv
+      hash: md5
+      md5: 7415a3638c7b25f9a9fba5fd60cccbaf
+      size: 62637
+    - path: data/imdb_test.csv
+      hash: md5
+      md5: c19b359013154bf250c23d306170498f
+      size: 77875998
+    - path: data/imdb_train.csv
+      hash: md5
+      md5: ddb62a1a41522965bb06a96ef3a7f285
+      size: 311815290
     - path: params.yaml
       hash: md5
-      md5: 3c9144844b22fcd0228454c48e389aa3
-      size: 20
+      md5: 0015d878e0088089962e75148dca7617
+      size: 833
     - path: src/train.py
       hash: md5
-      md5: 749769e691cd7b1676b1011c11cfe97c
-      size: 511
-    outs:
-    - path: data/model.pkl
-      hash: md5
-      md5: 5cef70cef50f315569ebf8701c3a6026
-      size: 833
-  evaluate:
-    cmd: python src/evaluate.py
-    deps:
-    - path: data/dataset.csv
-      hash: md5
-      md5: 08282760c70eaeee1114e7c7644970fb
-      size: 42
-    - path: data/model.pkl
-      hash: md5
-      md5: 5cef70cef50f315569ebf8701c3a6026
-      size: 833
-    - path: src/evaluate.py
-      hash: md5
-      md5: 34a9eb51c080651c275d025267fef50c
-      size: 494
-    outs:
-    - path: data/metrics.json
-      hash: md5
-      md5: 66fbc42250f2fc2fe3c1e9ec69b70833
-      size: 17
-  prepare_data:
-    cmd: python src\data_prep.py
-    deps:
-    - path: dataset.csv
-      hash: md5
-      md5: 3aa3a154e463d71d869ee28a1aa0881e
-      size: 44
-    outs:
-    - path: data\test.csv
-      hash: md5
-      md5: da2f2b707219cec139dbaa19425ea6d5
-      size: 7968
-    - path: data\train.csv
-      hash: md5
-      md5: 606c51d44d520377e5c4e4a1190c9d91
-      size: 31857
-  train_model:
-    cmd: python src\train.py
-    deps:
-    - path: data\test.csv
-      hash: md5
-      md5: da2f2b707219cec139dbaa19425ea6d5
-      size: 7968
-    - path: data\train.csv
-      hash: md5
-      md5: 606c51d44d520377e5c4e4a1190c9d91
-      size: 31857
-    - path: params.yaml
-      hash: md5
-      md5: cf4ad82b592266f4bdaecf1098e137e8
-      size: 273
+      md5: e43c195276df4f63bcbb2bff683a9581
+      size: 5684
     params:
       params.yaml:
-        models.logistic.C:
-        - 0.01
-        - 0.1
-        - 1
-        - 10
-        - 100
-        models.svm.C:
-        - 0.1
-        - 1
-        - 10
-        models.svm.kernel:
-        - linear
-        - rbf
-        - poly
-        train.cv_folds: 5
+        data.heart_label_column: target
+        data.label_column: sentiment
+        models.gbm:
+          enabled: true
+          params:
+            learning_rate:
+            - 0.01
+            - 0.1
+            max_depth:
+            - 3
+            - 5
+            n_estimators:
+            - 5
+            - 10
+        models.linearsvc:
+          enabled: true
+          params:
+            C:
+            - 0.1
+            - 1
+        models.lr:
+          enabled: true
+          params:
+            C:
+            - 0.1
+            - 1
+        models.xgb:
+          enabled: true
+          params:
+            learning_rate:
+            - 0.01
+            - 0.1
+            max_depth:
+            - 3
+            - 5
+            n_estimators:
+            - 5
+            - 10
+        preprocess.text.max_words: 1500
+        train.cv_folds: 3
+        train.random_state: 42
+        train.sample_size: 5000
         train.test_size: 0.2
     outs:
-    - path: models\best_model.pkl
+    - path: metrics/train_metrics.json
       hash: md5
-      md5: c66338c01af98c7a0402601c930c24dd
-      size: 2539
+      md5: 596a91b58ffc520adc87b40efc73c16d
+      size: 97
+    - path: models/
+      hash: md5
+      md5: fd4a0e1456c98674005a296ccaa1ee3e.dir
+      size: 69067
+      nfiles: 2

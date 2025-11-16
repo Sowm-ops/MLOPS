@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/202270640099759282/c2c6a15dc8604925963ddcf454ab73d2/artifacts
+end_time: 1763265142118
+entry_point_name: ''
+experiment_id: '202270640099759282'
+lifecycle_stage: active
+run_id: c2c6a15dc8604925963ddcf454ab73d2
+run_name: fun-mink-795
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763265125004
+status: 3
+tags: []
+user_id: KALYAN

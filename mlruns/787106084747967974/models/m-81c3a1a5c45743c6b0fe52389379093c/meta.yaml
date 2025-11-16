@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/787106084747967974/models/m-81c3a1a5c45743c6b0fe52389379093c/artifacts
+creation_timestamp: 1763264095071
+experiment_id: '787106084747967974'
+last_updated_timestamp: 1763264124578
+model_id: m-81c3a1a5c45743c6b0fe52389379093c
+model_type: null
+name: imdb_model
+source_run_id: 6478c3f2cff2424aaef85281dc1e81e0
+status: 2
+status_message: null

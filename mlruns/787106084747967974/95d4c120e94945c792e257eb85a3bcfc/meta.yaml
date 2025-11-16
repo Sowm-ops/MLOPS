@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/787106084747967974/95d4c120e94945c792e257eb85a3bcfc/artifacts
+end_time: 1763263856204
+entry_point_name: ''
+experiment_id: '787106084747967974'
+lifecycle_stage: active
+run_id: 95d4c120e94945c792e257eb85a3bcfc
+run_name: worried-crow-631
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763263833475
+status: 4
+tags: []
+user_id: KALYAN

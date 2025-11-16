@@ -1,5 +1,0 @@
-outs:
-- md5: ddb62a1a41522965bb06a96ef3a7f285
-  size: 311815290
-  hash: md5
-  path: imdb_train.csv

@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/787106084747967974/f44590c6824a45d2b694f3902667955e/artifacts
+end_time: 1763266353056
+entry_point_name: ''
+experiment_id: '787106084747967974'
+lifecycle_stage: active
+run_id: f44590c6824a45d2b694f3902667955e
+run_name: nimble-kit-196
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763266289388
+status: 3
+tags: []
+user_id: KALYAN

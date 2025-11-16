@@ -1,0 +1,5 @@
+{
+    "dataset": "imdb",
+    "best_model": "lr",
+    "accuracy": 0.8588
+}

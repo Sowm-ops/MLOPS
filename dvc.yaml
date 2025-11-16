@@ -1,32 +1,40 @@
-# dvc.yaml
 stages:
   prepare_data:
     cmd: python src/data_prep.py
     deps:
       - src/data_prep.py
       - IMDB Dataset.csv
+      - heart.csv
       - params.yaml
     outs:
-      - data/train.csv
-      - data/test.csv
+      - data/imdb_train.csv
+      - data/imdb_test.csv
+      - data/heart_train.csv
+      - data/heart_test.csv
 
   train_model:
     cmd: python src/train.py
     deps:
       - src/train.py
-      - data/train.csv
-      - data/test.csv
+      - data/imdb_train.csv
+      - data/imdb_test.csv
+      - data/heart_train.csv
+      - data/heart_test.csv
       - params.yaml
     params:
-      - models.svm.C
-      - models.svm.kernel
-      - models.rf.n_estimators
-      - models.rf.max_depth
-      - models.lr.C
-      - models.lr.solver
-      - train.cv_folds
+      - data.label_column
+      - data.heart_label_column
+      - preprocess.text.max_words
+      - train.sample_size
       - train.test_size
+      - train.random_state
+      - train.cv_folds
+      - models.lr
+      - models.linearsvc
+      - models.xgb
+      - models.gbm
     outs:
-      - models/best_model.pkl
+      - models/
     metrics:
-      - mlruns/
+      - metrics/train_metrics.json:
+          cache: false

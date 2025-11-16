@@ -1,0 +1,6 @@
+{
+    "heart": {
+        "best_model": "gbm",
+        "accuracy": 0.8360655737704918
+    }
+}

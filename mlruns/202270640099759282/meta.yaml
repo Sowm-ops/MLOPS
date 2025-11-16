@@ -1,0 +1,6 @@
+artifact_location: file:///C:/Users/KALYAN/MS_CICD/MLOPS/mlruns/202270640099759282
+creation_time: 1763264124831
+experiment_id: '202270640099759282'
+last_update_time: 1763264124831
+lifecycle_stage: active
+name: heart_experiment
