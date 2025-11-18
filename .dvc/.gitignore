@@ -3,3 +3,4 @@
 /model.pkl
 /metrics.json
 .dvc/config.local
+/config.local

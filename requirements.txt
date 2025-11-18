@@ -1,7 +1,8 @@
 scikit-learn
 pandas
 numpy
-dvc[gdrive]
+dvc[s3]
+boto3
 joblib
 streamlit
 mlflow
@@ -9,3 +10,6 @@ scikit-learn
 plotly
 seaborn
 matplotlib
+nltk
+xgboost
+dvc-s3

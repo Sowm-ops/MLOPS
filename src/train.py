@@ -15,6 +15,23 @@ from sklearn.preprocessing import LabelEncoder
 import xgboost as xgb
 from sklearn.ensemble import GradientBoostingClassifier
 import json
+import os, yaml, joblib, mlflow, mlflow.sklearn
+import pandas as pd, numpy as np
+from pathlib import Path
+
+# -------------------------------------------------
+# FORCE MLflow to ignore old KALYAN directory
+# -------------------------------------------------
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+MLFLOW_DIR = PROJECT_ROOT / "mlruns"
+MLFLOW_DIR.mkdir(parents=True, exist_ok=True)
+
+mlflow.set_tracking_uri(MLFLOW_DIR.as_uri())
+mlflow.set_registry_uri(MLFLOW_DIR.as_uri())
+
+print("USING MLFLOW DIR:", mlflow.get_tracking_uri())
+
+
 
 # Ensure dirs exist
 os.makedirs("metrics", exist_ok=True)
