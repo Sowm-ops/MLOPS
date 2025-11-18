@@ -229,4 +229,4 @@ Write-Host "`n=== MLOps Pipeline Completed Successfully ===" -ForegroundColor Cy
 # FINALLY RUN APP.PY
 # -------------------------------
 Write-Host "`nRunning src/app.py..." -ForegroundColor Yellow
-python src/app.py
+streamlit run src/app.py
