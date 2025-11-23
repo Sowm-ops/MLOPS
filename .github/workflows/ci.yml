@@ -49,6 +49,9 @@ jobs:
       - name: Pull data + models from S3
         run: dvc pull -v --force
 
+      - name: Download NLTK Data
+        run: |
+          python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
 
       - name: Run Data Preparation
         run: python src/data_prep.py
