@@ -3,41 +3,73 @@ name: CI Pipeline with DVC and S3
 on:
   push:
     branches: [main]
+    paths:
+      - "src/**"
+      - "params.yaml"
+      - "dvc.yaml"
+      - "dvc.lock"
+      - "data/**"
+      - "models/**"
+      - "metrics/**"
 
 jobs:
-  build:
+  mlops:
     runs-on: ubuntu-latest
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_DEFAULT_REGION: ap-south-1
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install dvc[s3]
 
-      - name: Configure DVC remote (S3)
+      - name: Configure DVC Remote (S3)
         run: |
-          dvc remote add -d myremote s3://sowmya-dvc-store/dvcstore --force
-          dvc remote modify myremote region $AWS_REGION --local
-          dvc remote modify myremote access_key_id $AWS_ACCESS_KEY_ID --local
-          dvc remote modify myremote secret_access_key $AWS_SECRET_ACCESS_KEY --local
+          dvc remote modify origin access_key_id $AWS_ACCESS_KEY_ID --local
+          dvc remote modify origin secret_access_key $AWS_SECRET_ACCESS_KEY --local
+          dvc remote modify origin region ap-south-1 --local
 
-      - name: Pull data with DVC
+      - name: Pull data + models from S3
         run: dvc pull -v
 
-      - name: Run pipeline
+      - name: Run Data Preparation
+        run: python src/data_prep.py
+
+      - name: Run Training
+        run: python src/train.py
+
+      - name: Run DVC Repro (ensures pipeline consistency)
+        run: dvc repro
+
+      - name: Push updated artifacts to S3
+        run: dvc push -v
+
+      - name: Commit updated DVC metadata + metrics
         run: |
-          python src/train.py
-          python src/evaluate.py
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add . || true
+          git commit -m "Auto-update: metrics + DVC pipeline outputs" || true
+          git push || true
+
+      - name: Upload metrics (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: metrics
+          path: metrics/
