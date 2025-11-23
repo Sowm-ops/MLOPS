@@ -1,5 +1,8 @@
 name: CI Pipeline with model training DVC and S3
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [main]
