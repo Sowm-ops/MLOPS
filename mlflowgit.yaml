@@ -1,0 +1,81 @@
+name: MLOps Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  mlops:
+    runs-on: ubuntu-latest
+
+    steps:
+    # ----------------------
+    # CHECKOUT CODE
+    # ----------------------
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # ----------------------
+    # PYTHON SETUP
+    # ----------------------
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # ----------------------
+    # SETUP AWS + DVC REMOTE
+    # ----------------------
+    - name: Configure AWS Credentials for S3
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region:            ${{ secrets.AWS_DEFAULT_REGION }}
+
+    - name: Configure DVC Remote
+      run: |
+        dvc remote modify origin access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        dvc remote modify origin secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        dvc remote modify origin region ${{ secrets.AWS_DEFAULT_REGION }}
+
+    # ----------------------
+    # RUN DVC PULL (GET DATA)
+    # ----------------------
+    - name: Pull Data from S3
+      run: dvc pull || echo "No remote data yet"
+
+    # ----------------------
+    # RUN PIPELINE
+    # ----------------------
+    - name: Run Data Preparation
+      run: python src/data_prep.py
+
+    - name: Run Model Training
+      run: python src/train.py
+
+    - name: Reproduce DVC Pipeline
+      run: dvc repro
+
+    # ----------------------
+    # PUSH ARTIFACTS TO S3
+    # ----------------------
+    - name: Push Artifacts to S3
+      run: dvc push
+
+    # ----------------------
+    # COMMIT AND PUSH METADATA
+    # ----------------------
+    - name: Commit Updated Pipeline Files
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add .
+        git commit -m "Auto MLOps pipeline update" || echo "No changes"
+        git push
