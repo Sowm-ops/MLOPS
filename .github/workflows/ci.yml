@@ -1,4 +1,4 @@
-name: CI Pipeline with DVC and S3
+name: CI Pipeline with model training DVC and S3
 
 on:
   push:
