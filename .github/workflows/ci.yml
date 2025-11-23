@@ -71,7 +71,7 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add . || true
           git commit -m "Auto-update: metrics + DVC pipeline outputs" || true
-          git push || true
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Sowm-ops/MLOPS.git HEAD:main || true
 
       - name: Upload metrics (artifact)
         uses: actions/upload-artifact@v4
