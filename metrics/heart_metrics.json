@@ -1,5 +1,5 @@
 {
     "dataset": "heart",
-    "best_model": "gbm",
+    "best_model": "xgb",
     "accuracy": 0.8360655737704918
 }

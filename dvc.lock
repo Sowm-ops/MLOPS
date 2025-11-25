@@ -13,7 +13,7 @@ stages:
       size: 11325
     - path: params.yaml
       hash: md5
-      md5: c7cca8106433a7f181fc70415f125e65
+      md5: ea281a5c08ecf3a1de2ba13307183b95
       size: 793
     - path: src/data_prep.py
       hash: md5
@@ -22,42 +22,42 @@ stages:
     outs:
     - path: data/heart_test.csv
       hash: md5
-      md5: b0ad34418e7fbaa526474836c5cfac35
-      size: 15861
+      md5: 9a0ace63a68b24cb9f9b2adef683c62c
+      size: 15799
     - path: data/heart_train.csv
       hash: md5
-      md5: 7415a3638c7b25f9a9fba5fd60cccbaf
-      size: 62637
+      md5: f0b9efa9c69901033fe7a163b31ed2cb
+      size: 62394
     - path: data/imdb_test.csv
       hash: md5
-      md5: 941890637b6258d261622fb313ad648c
-      size: 77876476
+      md5: 18d5ff8a2d440e080282672f1f0f9b59
+      size: 77866475
     - path: data/imdb_train.csv
       hash: md5
-      md5: 5987eb7526d6239dc9472d85feb82555
-      size: 311816804
+      md5: 419f7bafbf5f1d19439e46667ceb3622
+      size: 311776803
   train_model:
     cmd: python src/train.py
     deps:
     - path: data/heart_test.csv
       hash: md5
-      md5: b0ad34418e7fbaa526474836c5cfac35
-      size: 15861
+      md5: 9a0ace63a68b24cb9f9b2adef683c62c
+      size: 15799
     - path: data/heart_train.csv
       hash: md5
-      md5: 7415a3638c7b25f9a9fba5fd60cccbaf
-      size: 62637
+      md5: f0b9efa9c69901033fe7a163b31ed2cb
+      size: 62394
     - path: data/imdb_test.csv
       hash: md5
-      md5: 941890637b6258d261622fb313ad648c
-      size: 77876476
+      md5: 18d5ff8a2d440e080282672f1f0f9b59
+      size: 77866475
     - path: data/imdb_train.csv
       hash: md5
-      md5: 5987eb7526d6239dc9472d85feb82555
-      size: 311816804
+      md5: 419f7bafbf5f1d19439e46667ceb3622
+      size: 311776803
     - path: params.yaml
       hash: md5
-      md5: c7cca8106433a7f181fc70415f125e65
+      md5: ea281a5c08ecf3a1de2ba13307183b95
       size: 793
     - path: src/train.py
       hash: md5
@@ -96,7 +96,7 @@ stages:
           params:
             learning_rate:
             - 0.01
-            - 0.1
+            - 0.2
             max_depth:
             - 3
             - 5
@@ -111,10 +111,10 @@ stages:
     outs:
     - path: metrics/train_metrics.json
       hash: md5
-      md5: 18ba80bac8f2f58f0c8c86aeb3b6c900
+      md5: 700c2ef44f30602b732514f695ae9f80
       size: 92
     - path: models/
       hash: md5
-      md5: af19627ba9e6dda01ebd6e7b5c2c994f.dir
-      size: 58135
+      md5: 2d36d4f851f80aad58906de8df248579.dir
+      size: 41949
       nfiles: 2
