@@ -23,7 +23,11 @@ def test_heart_model_prediction():
 def test_imdb_model_prediction():
     model = joblib.load("models/imdb_best.pkl")
     df = pd.read_csv("data/imdb_test.csv")
-    X = df.drop(columns=["sentiment"])
+
+    # Drop non-TFIDF columns to match training
+    X = df.drop(columns=["sentiment"], errors="ignore")
+    X = X[[c for c in X.columns if c.startswith("tfidf_")]]
 
     pred = model.predict(X)
-    assert len(pred) == len(X), "IMDB prediction length mismatch"
+    assert len(pred) == len(df), "Prediction length mismatch"
+
