@@ -30,7 +30,7 @@ models:
   xgb:
     enabled: true
     params:
-      learning_rate: [0.01, 0.1]
+      learning_rate: [0.01, 0.2]
       max_depth: [3, 5]
       n_estimators: [5, 10]
   gbm:
