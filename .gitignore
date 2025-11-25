@@ -5,6 +5,7 @@ mlruns/
 .venv/
 venv/
 env/
+venvp/
 
 # Large binaries
 *.dll
