@@ -13,3 +13,4 @@ matplotlib
 nltk
 xgboost
 dvc-s3
+evidently

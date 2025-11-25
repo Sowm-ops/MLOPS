@@ -1,4 +1,4 @@
-name: CI Pipeline with model training DVC and S3
+name: CI Pipeline with model training, DVC, S3, and Test Suite
 
 permissions:
   contents: write
@@ -27,50 +27,53 @@ jobs:
       AWS_DEFAULT_REGION: ap-south-1
 
     steps:
-
-      # ----------------------------------------------------
-      # CHECKOUT
-      # ----------------------------------------------------
+    # ----------------------------------------------------
+    # CHECKOUT
+    # ----------------------------------------------------
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # ----------------------------------------------------
-      # PYTHON
-      # ----------------------------------------------------
+    # ----------------------------------------------------
+    # PYTHON + PATH FIX
+    # ----------------------------------------------------
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      # ----------------------------------------------------
-      # DEPENDENCIES
-      # ----------------------------------------------------
+      - name: Add project root to PYTHONPATH
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+
+    # ----------------------------------------------------
+    # INSTALL DEPENDENCIES
+    # ----------------------------------------------------
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install dvc[s3] pytest evidently
+          pip install dvc[s3] pytest
+          pip install evidently==0.4.32
 
-      # ----------------------------------------------------
-      # DVC CONFIG
-      # ----------------------------------------------------
+    # ----------------------------------------------------
+    # CONFIGURE DVC REMOTE
+    # ----------------------------------------------------
       - name: Configure DVC Remote (S3)
         run: |
           dvc remote modify origin access_key_id $AWS_ACCESS_KEY_ID --local
           dvc remote modify origin secret_access_key $AWS_SECRET_ACCESS_KEY --local
-          dvc remote modify origin region ap-south-1 --local
+          dvc remote modify origin region $AWS_DEFAULT_REGION --local
 
-      # ----------------------------------------------------
-      # DVC PULL
-      # ----------------------------------------------------
+    # ----------------------------------------------------
+    # PULL EXISTING DATA/MODELS
+    # ----------------------------------------------------
       - name: Pull data + models from S3
         run: dvc pull -v --force
 
-      # ----------------------------------------------------
-      # NLTK
-      # ----------------------------------------------------
+    # ----------------------------------------------------
+    # NLTK (text preprocessing)
+    # ----------------------------------------------------
       - name: Download NLTK Data
         run: |
           python - <<EOF
@@ -82,39 +85,38 @@ jobs:
           nltk.download('omw-1.4')
           EOF
 
-      # ----------------------------------------------------
-      # RUN TEST SUITE 
-      # ----------------------------------------------------
-      - name: Run Tests (data, model, preprocessing, pipeline)
+    # ----------------------------------------------------
+    # RUN TEST SUITE (IMPORTANT FOR PROFESSOR)
+    # ----------------------------------------------------
+      - name: Run Tests (data, model, drift, pipeline)
         run: |
-          echo 'Running pytest test suite...'
+          echo "Running pytest test suite..."
           pytest -q
 
       - name: Stop pipeline when tests fail
         if: failure()
         run: |
-          echo "❌ Test suite failed. Stopping CI."
+          echo "Test suite failed. Stopping CI."
           exit 1
 
-      # ----------------------------------------------------
-      # ONLY IF TESTS PASS → Train models
-      # ----------------------------------------------------
-
+    # ----------------------------------------------------
+    # ONLY IF TESTS PASS → TRAIN MODELS
+    # ----------------------------------------------------
       - name: Run Data Preparation
         run: python src/data_prep.py
 
       - name: Run Training
         run: python src/train.py
 
-      - name: Run DVC Repro
+      - name: Run DVC Repro (ensure pipeline)
         run: dvc repro
 
       - name: Push updated artifacts to S3
         run: dvc push -v
 
-      # ----------------------------------------------------
-      # COMMIT METADATA
-      # ----------------------------------------------------
+    # ----------------------------------------------------
+    # COMMIT UPDATED METADATA
+    # ----------------------------------------------------
       - name: Commit updated DVC metadata + metrics
         run: |
           git config --global user.name "github-actions"
@@ -123,9 +125,9 @@ jobs:
           git commit -m "Auto-update: metrics + DVC pipeline outputs" || true
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Sowm-ops/MLOPS.git HEAD:main || true
 
-      # ----------------------------------------------------
-      # UPLOAD METRICS
-      # ----------------------------------------------------
+    # ----------------------------------------------------
+    # UPLOAD METRICS ARTIFACT
+    # ----------------------------------------------------
       - name: Upload metrics (artifact)
         uses: actions/upload-artifact@v4
         with:
